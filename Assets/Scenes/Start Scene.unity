@@ -425,6 +425,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7455257733886079286, guid: 613dc4fb8a1a6cb47b9da3a257e05082,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 4961687408056951299}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 613dc4fb8a1a6cb47b9da3a257e05082, type: 3}
 --- !u!1 &4961687408056951295 stripped
@@ -480,3 +485,9 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.42101872, y: 2.0953884}
   m_EdgeRadius: 0
+--- !u!95 &4961687408056951299 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 655055025782106774, guid: 613dc4fb8a1a6cb47b9da3a257e05082,
+    type: 3}
+  m_PrefabInstance: {fileID: 4961687408056951294}
+  m_PrefabAsset: {fileID: 0}
