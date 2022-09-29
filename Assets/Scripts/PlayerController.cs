@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    public bool crouch;
-    public bool jump;
+    public float speed, jumpforce;
+    public bool crouch, jump, isgrounded;
+
     public Animator animator;
     public BoxCollider2D boxCollider;
+    public Rigidbody2D rigidbody;
 
     //gameobject active
     private void Awake()
     {
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
+        rigidbody = gameObject.GetComponent<Rigidbody2D>(); 
     }
 
     // Update is called once per frame
@@ -22,22 +24,48 @@ public class PlayerController : MonoBehaviour
     {
        
         float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
 
-        PlayerAnimation(horizontal, crouch, jump);
-        PlayerMovement(horizontal);
+        PlayerAnimation(horizontal, vertical, crouch, jump);
+        PlayerMovement(horizontal, vertical);
        
     }
 
-    //movement for player
-    private void PlayerMovement (float horizontal)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(collision.gameObject.tag == "Platform")
+        {
+            isgrounded= true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Platform")
+        {
+            isgrounded = false;
+        }
+    }
+
+    //movement for player
+    private void PlayerMovement (float horizontal, float vertical)
+    {
+        //horizontal movement
         Vector3 position = transform.position;
         position.x += horizontal * speed * Time.deltaTime; 
         transform.position = position;
+
+        //vertical movement
+        if (vertical > 0 && isgrounded)
+            {
+                rigidbody.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
+                
+            }
+        
     }
 
     //animation for player
-    private void PlayerAnimation (float horizontal, bool crouch, bool jump)
+    private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump)
     {
         //run animation
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
@@ -69,7 +97,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Crouch", crouch);
 
         //jump animation
-        if (Input.GetAxisRaw("Vertical") > 0)
+        if (vertical > 0)
         {
             jump = true;
         } else
