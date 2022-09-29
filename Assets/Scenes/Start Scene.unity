@@ -481,9 +481,9 @@ BoxCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
-  m_Size: {x: 0.42101872, y: 2.0953884}
+  m_Size: {x: 0.421, y: 2.095}
   m_EdgeRadius: 0
 --- !u!95 &4961687408056951299 stripped
 Animator:
