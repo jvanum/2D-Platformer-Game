@@ -2,24 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    public float jumpforce;
-    private bool crouch, jump, isgrounded, playerDead;
+    public float speed, jumpforce;
+    public bool crouch, jump, isgrounded;
 
     public Animator animator;
     public BoxCollider2D boxCollider;
-    public Rigidbody2D rigidbdy;
+    public Rigidbody2D rigidbody;
 
     //gameobject active
     private void Awake()
     {
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        rigidbdy = gameObject.GetComponent<Rigidbody2D>(); 
+        rigidbody = gameObject.GetComponent<Rigidbody2D>(); 
     }
 
     // Update is called once per frame
@@ -33,7 +30,6 @@ public class PlayerController : MonoBehaviour
         PlayerMovement(horizontal, vertical);
        
     }
- 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -43,14 +39,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Platform")
-        {   
-            Debug.Log("not grounded ");
+        {
             isgrounded = false;
         }
-    } */
+    }
 
     //movement for player
     private void PlayerMovement (float horizontal, float vertical)
@@ -63,14 +58,12 @@ public class PlayerController : MonoBehaviour
         //vertical movement
         if (vertical > 0 && isgrounded)
             {
-                rigidbdy.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
-                            Debug.Log("jumped ");
-                isgrounded = false;
-
+                rigidbody.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
+                
             }
-
+        
     }
-    
+
     //animation for player
     private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump)
     {
@@ -114,13 +107,4 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Jump", jump);
     }
 
-//death animation
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Respawn")
-        {
-            playerDead= true;
-        }
-        animator.SetBool("PlayerDead", playerDead);
-    }
 }
