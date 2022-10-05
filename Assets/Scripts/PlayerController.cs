@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float jumpforce;
     private bool crouch, jump, isgrounded, playerDead;
 
+    public ScoreController scoreControl;
     public Animator animator;
     public BoxCollider2D boxCollider;
     public Rigidbody2D rigidbdy;
@@ -19,7 +20,13 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        rigidbdy = gameObject.GetComponent<Rigidbody2D>(); 
+        rigidbdy = gameObject.GetComponent<Rigidbody2D>();
+    }
+
+    public void PickUpKey()
+    {
+        scoreControl.IncreaseScore(10);
+        Debug.Log("Key picked up");
     }
 
     // Update is called once per frame

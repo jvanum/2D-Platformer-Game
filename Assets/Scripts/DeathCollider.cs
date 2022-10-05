@@ -15,7 +15,7 @@ public class DeathCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D death)
     {
         if (death.gameObject.GetComponent<PlayerController>() != null)
-          Debug.Log("Plater Died, respawning");
+          Debug.Log("Player Died, respawning");
         StartCoroutine(WaitForSceneLoad());
     }
 }
