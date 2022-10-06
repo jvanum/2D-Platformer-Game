@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DeathCollider : MonoBehaviour
 {
 
-    private IEnumerator WaitForSceneLoad()
+    public IEnumerator WaitForSceneLoad()
     {
         yield return new WaitForSeconds(1f);
      SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

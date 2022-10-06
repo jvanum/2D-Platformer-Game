@@ -23,10 +23,26 @@ public class PlayerController : MonoBehaviour
         rigidbdy = gameObject.GetComponent<Rigidbody2D>();
     }
 
+    //increases score when key is picked up
     public void PickUpKey()
     {
         scoreControl.IncreaseScore(10);
         Debug.Log("Key picked up");
+    }
+
+    //wait time coroutine after player death
+    public IEnumerator WaitForPlayerDeath()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    //called when player collides with enemy
+    public void KillPlayer()
+    {
+        Debug.Log("Player killed by enemy");
+        animator.SetBool("PlayerDead", true);
+        StartCoroutine(WaitForPlayerDeath());
     }
 
     // Update is called once per frame
@@ -41,7 +57,7 @@ public class PlayerController : MonoBehaviour
        
     }
  
-
+    //Detect if player is grounded with platform 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Platform")
@@ -62,23 +78,23 @@ public class PlayerController : MonoBehaviour
     //movement for player
     private void PlayerMovement (float horizontal, float vertical)
     {
-        //horizontal movement
+        //player horizontal movement
         Vector3 position = transform.position;
         position.x += horizontal * speed * Time.deltaTime; 
         transform.position = position;
 
-        //vertical movement
+        //player vertical movement
         if (vertical > 0 && isgrounded)
             {
                 rigidbdy.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
-                            Debug.Log("jumped ");
+                            Debug.Log("Player jumped ");
                 isgrounded = false;
 
             }
 
     }
     
-    //animation for player
+    //animations for player
     private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump)
     {
         //run animation
