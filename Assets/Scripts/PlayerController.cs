@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private bool crouch, jump, isgrounded, playerDead;
 
     public ScoreController scoreControl;
-    public Animator animator;
+    public Animator playerAnimator;
     public BoxCollider2D boxCollider;
     public Rigidbody2D rigidbdy;
 
@@ -30,10 +30,10 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Key picked up");
     }
 
-    //wait time coroutine after player death
+    //wait time coroutine for player death
     public IEnumerator WaitForPlayerDeath()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     public void KillPlayer()
     {
         Debug.Log("Player killed by enemy");
-        animator.SetBool("PlayerDead", true);
+        playerAnimator.SetBool("PlayerDead", true);
         StartCoroutine(WaitForPlayerDeath());
     }
 
@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
     private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump)
     {
         //run animation
-        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        playerAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
 
         Vector3 scale = transform.localScale;
         if (horizontal < 0)
@@ -123,8 +123,8 @@ public class PlayerController : MonoBehaviour
             crouch = false;
             boxCollider.size = new Vector2(0.4212f, 2.0952f);
             boxCollider.offset = new Vector2(-0.0194f , 0.9591f);
-        }   
-        animator.SetBool("Crouch", crouch);
+        }
+        playerAnimator.SetBool("Crouch", crouch);
 
         //jump animation
         if (vertical > 0)
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
         {
             jump = false;
         }
-        animator.SetBool("Jump", jump);
+        playerAnimator.SetBool("Jump", jump);
     }
 
 //death animation
@@ -144,6 +144,6 @@ public class PlayerController : MonoBehaviour
         {
             playerDead= true;
         }
-        animator.SetBool("PlayerDead", playerDead);
+        playerAnimator.SetBool("PlayerDead", playerDead);
     }
 }
