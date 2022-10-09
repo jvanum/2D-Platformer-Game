@@ -8,6 +8,7 @@ public class ScoreController : MonoBehaviour
     private TextMeshProUGUI scoreText;
 
     private int score = 0;
+
     private void Awake()
     {
         scoreText = GetComponent<TextMeshProUGUI>();
@@ -25,6 +26,8 @@ public class ScoreController : MonoBehaviour
 
     private void RefreshUI()
     {
-        scoreText.text = "Score : " + score;
+       scoreText.text = "Score : " + score;
     }
 }
+
+

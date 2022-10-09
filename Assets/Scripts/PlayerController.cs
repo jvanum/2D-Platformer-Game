@@ -9,40 +9,59 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
     public float jumpforce;
-    private bool crouch, jump, isgrounded, playerDead;
+    private bool crouch, jump, isgrounded;
+    // player max and current lives
 
     public ScoreController scoreControl;
     public Animator playerAnimator;
     public BoxCollider2D boxCollider;
     public Rigidbody2D rigidbdy;
+    public LivesController livesController;
 
     //gameobject active
     private void Awake()
     {
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         rigidbdy = gameObject.GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     //increases score when key is picked up
-    public void PickUpKey()
+    public void PickKey()
     {
+        Debug.Log("PickKey called successfully");
         scoreControl.IncreaseScore(10);
-        Debug.Log("Key picked up");
+    }
+
+    //player takes damage on colliding with enemy
+    public void TakeDamage()
+    {
+        int currentLives = livesController.DestroyLife();
+        if(currentLives <= 0)
+        {
+            KillPlayer();
+        }
+        else
+        {
+           PlayerHurtAnim();
+           Debug.Log("Player hurt");
+        }
     }
 
     //wait time coroutine for player death
-    public IEnumerator WaitForPlayerDeath()
+    public IEnumerator WaitForSomeTime()
     {
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    //called when player collides with enemy
+    
+    //called when player dies
     public void KillPlayer()
     {
-        Debug.Log("Player killed by enemy");
-        playerAnimator.SetBool("PlayerDead", true);
-        StartCoroutine(WaitForPlayerDeath());
+        Debug.Log("Player Died");
+        PlayerDeathAnim();
+        StartCoroutine(WaitForSomeTime());
     }
 
     // Update is called once per frame
@@ -66,15 +85,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Platform")
-        {   
-            Debug.Log("not grounded ");
-            isgrounded = false;
-        }
-    } */
-
     //movement for player
     private void PlayerMovement (float horizontal, float vertical)
     {
@@ -87,15 +97,14 @@ public class PlayerController : MonoBehaviour
         if (vertical > 0 && isgrounded)
             {
                 rigidbdy.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
-                            Debug.Log("Player jumped ");
+                Debug.Log("Player jumped ");
                 isgrounded = false;
-
             }
 
     }
     
-    //animations for player
-    private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump)
+    //animations for player - run, crouch, jump
+    private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump )
     {
         //run animation
         playerAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
@@ -137,13 +146,16 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetBool("Jump", jump);
     }
 
-//death animation
-    private void OnTriggerEnter2D(Collider2D collision)
+    //player death animation
+    public void PlayerDeathAnim()
     {
-        if(collision.gameObject.tag == "Respawn")
-        {
-            playerDead= true;
-        }
-        playerAnimator.SetBool("PlayerDead", playerDead);
+        playerAnimator.SetTrigger("PlayerIsDead");
+        Debug.Log("Player Death animation played");
+    }
+
+    public void PlayerHurtAnim()
+    {
+        playerAnimator.SetTrigger("PlayerIsHurt");
+        Debug.Log("Player Hurt animation played");
     }
 }

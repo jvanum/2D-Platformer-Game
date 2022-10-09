@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelOverController : MonoBehaviour
 {
-    static int totalScenes = 2;
+    static int totalScenes = 5;
 
     private void OnTriggerEnter2D (Collider2D collision)
     {

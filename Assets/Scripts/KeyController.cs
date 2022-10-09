@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class KeyController : MonoBehaviour
 {
-   
+    public PlayerController playerController;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.gameObject.GetComponent <PlayerController>() != null)
+        playerController = collision.gameObject.GetComponent<PlayerController>();
+
+        if (playerController != null)
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
-            playerController.PickUpKey();
+            playerController.PickKey();
             Destroy(gameObject);
+            Debug.Log("Key destroyed");
         }
     }
 }
