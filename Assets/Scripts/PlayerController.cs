@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D boxCollider;
     public Rigidbody2D rigidbdy;
     public LivesController livesController;
+    public GameOverController gameOverController;
 
     //gameobject active
     private void Awake()
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator WaitForSomeTime()
     {
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        gameOverController.PlayerDied();
     }
 
     
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player Died");
         PlayerDeathAnim();
         StartCoroutine(WaitForSomeTime());
+        this.enabled = false;
     }
 
     // Update is called once per frame

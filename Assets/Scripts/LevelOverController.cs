@@ -4,10 +4,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+// reached teleporter and proceed to next level
 public class LevelOverController : MonoBehaviour
 {
-    static int totalScenes = 5;
+    static int totalScenes = 6;
 
     private void OnTriggerEnter2D (Collider2D collision)
     {

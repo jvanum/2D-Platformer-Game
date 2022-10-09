@@ -127,6 +127,7 @@ MonoBehaviour:
   boxCollider: {fileID: 0}
   rigidbdy: {fileID: 0}
   livesController: {fileID: 0}
+  gameOverController: {fileID: 0}
 --- !u!50 &4961687408056951296
 Rigidbody2D:
   serializedVersion: 4
