@@ -13,8 +13,11 @@ public class PlayerController : MonoBehaviour
     // player max and current lives
 
     public ScoreController scoreControl;
+    [HideInInspector]
     public Animator playerAnimator;
+    [HideInInspector]
     public BoxCollider2D boxCollider;
+    [HideInInspector]
     public Rigidbody2D rigidbdy;
     public LivesController livesController;
     public GameOverController gameOverController;
@@ -64,6 +67,7 @@ public class PlayerController : MonoBehaviour
         PlayerDeathAnim();
         StartCoroutine(WaitForSomeTime());
         this.enabled = false;
+
     }
 
     // Update is called once per frame
