@@ -62,4 +62,7 @@ public class EnemyController : MonoBehaviour
             playerController.TakeDamage();
         }
     }
+
+    //enemy animations
+
 }

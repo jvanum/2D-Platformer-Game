@@ -10,6 +10,7 @@ public class DeathCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         playerController = collision.GetComponent<PlayerController>();
+
         if (playerController != null)
         Debug.Log("Player fell from platform, respawning");
         playerController.KillPlayer();

@@ -26,6 +26,7 @@ public class GameOverController : MonoBehaviour
 
     private void ExitGame()
     {
+        Application.Quit();
         Debug.Log("Quit Game");
     }
 }

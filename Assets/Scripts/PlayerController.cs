@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
         else
         {
            PlayerHurtAnim();
+           transform.position = new Vector3(0f, 0f, 0f);
            Debug.Log("Player hurt");
         }
     }

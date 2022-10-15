@@ -28,7 +28,9 @@ public class LobbyController : MonoBehaviour
 
     private void ExitGame()
     {
+
         Debug.Log("Quit Game");
+        Application.Quit();
     }
 
     private void CloseLevelPanel()
