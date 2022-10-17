@@ -10,6 +10,7 @@ public class KeyController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
+            SoundManager.Instance.Play(SoundTypes.COLLECTKEY);
             playerController.PickKey();
             Destroy(gameObject);
             Debug.Log("Key destroyed");

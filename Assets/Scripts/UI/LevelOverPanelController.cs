@@ -21,6 +21,7 @@ public class LevelOverPanelController : MonoBehaviour
 
     private void LoadNextLevel()
     {
+        SoundManager.Instance.Play(SoundTypes.LEVELLOAD);
          int sceneIndex = SceneManager.GetActiveScene().buildIndex;
             sceneIndex++;
             if (sceneIndex == totalScenes)
@@ -28,15 +29,17 @@ public class LevelOverPanelController : MonoBehaviour
                 sceneIndex = 0;
             }
 
-            SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene(sceneIndex);
     }
 
     private void LoadMainMenu()
     {
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         SceneManager.LoadScene(0);
     }
     private void ExitGame()
     {
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         Application.Quit();
         Debug.Log("Quit Game");
     }

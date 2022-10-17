@@ -9,6 +9,7 @@ public class LevelOver : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            SoundManager.Instance.Play(SoundTypes.PLAYERTELEPORT);
             Debug.Log("Level complete");
             LevelManager.Instance.LevelCompleted();
             levelOverPanelController.gameObject.SetActive(true);

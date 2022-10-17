@@ -18,18 +18,20 @@ public class LobbyController : MonoBehaviour
 
     private void EnterGame()
     {
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         LevelScreen.SetActive(true);
     }
 
     private void ExitGame()
     {
-
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         Debug.Log("Quit Game");
         Application.Quit();
     }
 
     private void CloseLevelPanel()
     {
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         LevelScreen.SetActive(false);
     }
 

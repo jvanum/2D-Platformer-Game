@@ -36,9 +36,17 @@ public class PlayerController : MonoBehaviour
 
         PlayerAnimation(horizontal, vertical, crouch, jump);
         PlayerMovement(horizontal, vertical);
+        PlayMovementSound(horizontal);
        
     }
-
+    //player movement sound
+     private void PlayMovementSound(float horizontal)
+    {
+        if (horizontal != 0 && isgrounded)
+        {
+            SoundManager.Instance.PlayContinuous(SoundTypes.PLAYERMOVE);
+        }
+    }
     //increases score when key is picked up
     public void PickKey()
     {
@@ -66,6 +74,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator WaitForSomeTime()
     {
         yield return new WaitForSeconds(1f);
+        SoundManager.Instance.Play(SoundTypes.PLAYERDEATH);
         gameOverController.PlayerDied();
     }
 
@@ -102,6 +111,7 @@ public class PlayerController : MonoBehaviour
         //player vertical movement
         if (vertical > 0 && isgrounded)
             {
+                SoundManager.Instance.Play(SoundTypes.PLAYERJUMP);
                 rigidbdy.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
                 Debug.Log("Player jumped ");
                 isgrounded = false;
@@ -155,12 +165,14 @@ public class PlayerController : MonoBehaviour
     //player death animation
     public void PlayerDeathAnim()
     {
+        SoundManager.Instance.Play(SoundTypes.PLAYERFELL);
         playerAnimator.SetTrigger("PlayerIsDead");
         Debug.Log("Player Death animation played");
     }
 
     public void PlayerHurtAnim()
     {
+        SoundManager.Instance.Play(SoundTypes.PLAYERHURT);
         playerAnimator.SetTrigger("PlayerIsHurt");
         Debug.Log("Player Hurt animation played");
     }
