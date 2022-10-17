@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour
@@ -20,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Rigidbody2D rigidbdy;
     public LivesController livesController;
-    public GameOverController gameOverController;
+    public GameOverPanelController gameOverController;
 
     //gameobject active
     private void Awake()
@@ -28,6 +25,18 @@ public class PlayerController : MonoBehaviour
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         rigidbdy = gameObject.GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
+    }
+
+    
+    private void Update()
+    {
+       
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+
+        PlayerAnimation(horizontal, vertical, crouch, jump);
+        PlayerMovement(horizontal, vertical);
+       
     }
 
     //increases score when key is picked up
@@ -72,16 +81,6 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
-    {
-       
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-
-        PlayerAnimation(horizontal, vertical, crouch, jump);
-        PlayerMovement(horizontal, vertical);
-       
-    }
  
     //Detect if player is grounded with platform 
     private void OnCollisionEnter2D(Collision2D collision)

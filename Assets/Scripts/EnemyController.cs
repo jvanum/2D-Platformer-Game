@@ -34,7 +34,8 @@ public class EnemyController : MonoBehaviour
         {
             enemyRbd.velocity = new Vector2(speed, 0f);
         }
-        enemyAnim.SetBool("CanPatrol", true);
+        EnemyWalkAnim();
+        
     }
     
     bool isfacingright()
@@ -63,6 +64,14 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    //enemy animations
+      //enemy walk animation
+    private void EnemyWalkAnim()
+    {
+        enemyAnim.SetTrigger("CanWalk");
+    }
 
+    private void EnemyDeathAnim()
+    {
+        enemyAnim.SetTrigger("Dead");
+    }
 }

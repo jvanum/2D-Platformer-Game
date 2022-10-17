@@ -1,0 +1,18 @@
+using UnityEngine;
+
+// reached teleporter and proceed to next level
+public class LevelOver : MonoBehaviour
+{
+    [SerializeField] private LevelOverPanelController levelOverPanelController;
+
+    private void OnTriggerEnter2D (Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Level complete");
+            LevelManager.Instance.LevelCompleted();
+            levelOverPanelController.gameObject.SetActive(true);
+        }
+    }
+
+}

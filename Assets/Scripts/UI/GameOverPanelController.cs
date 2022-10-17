@@ -1,12 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameOverController : MonoBehaviour
+public class GameOverPanelController : MonoBehaviour
 {
     [SerializeField] private Button buttonRestart;
+    [SerializeField] private Button buttonMainMenu;
     [SerializeField] private Button buttonQuit;
 
     public void PlayerDied()
@@ -16,6 +16,7 @@ public class GameOverController : MonoBehaviour
     private void Awake()
     {
         buttonRestart.onClick.AddListener(ReloadGame);
+        buttonMainMenu.onClick.AddListener(MainMenu);
         buttonQuit.onClick.AddListener(ExitGame);
     }
 
@@ -24,6 +25,10 @@ public class GameOverController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    private void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
     private void ExitGame()
     {
         Application.Quit();

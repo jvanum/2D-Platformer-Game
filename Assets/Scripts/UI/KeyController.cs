@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyController : MonoBehaviour
@@ -10,7 +8,7 @@ public class KeyController : MonoBehaviour
     {
         playerController = collision.gameObject.GetComponent<PlayerController>();
 
-        if (playerController != null)
+        if (collision.gameObject.CompareTag("Player"))
         {
             playerController.PickKey();
             Destroy(gameObject);
