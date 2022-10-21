@@ -52,8 +52,8 @@ public class SoundManager : MonoBehaviour
 
     private void Update()
     {//mute music with space for testing
-        if (Input.GetKeyDown(KeyCode.Space))
-            music.mute = !music.mute;
+        if (Input.GetKeyDown(KeyCode.M))
+           music.mute = !music.mute;
     }
     public void PlayMusic(SoundTypes soundType)
     {

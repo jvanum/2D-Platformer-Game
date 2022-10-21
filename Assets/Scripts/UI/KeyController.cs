@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class KeyController : MonoBehaviour
 {
-    public PlayerController playerController;
+    [SerializeField] private PlayerController playerController;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -1,23 +1,23 @@
+using System;
 using System.Collections;
 using UnityEngine;
-
-
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    public float jumpforce;
-    private bool crouch, jump, isgrounded;
-    // player max and current lives
+    [SerializeField] private float speed;
+    [SerializeField] private float jumpforce;
+    private bool isgrounded;
+    private bool canJump;
+    private bool crouch;
 
     public ScoreController scoreControl;
-    [HideInInspector]
-    public Animator playerAnimator;
-    [HideInInspector]
-    public BoxCollider2D boxCollider;
-    [HideInInspector]
-    public Rigidbody2D rigidbdy;
-    public LivesController livesController;
-    public GameOverPanelController gameOverController;
+   // [HideInInspector]
+    private Animator playerAnimator;
+    //[HideInInspector]
+    private BoxCollider2D boxCollider;
+    //[HideInInspector]
+    private Rigidbody2D rigidbdy;
+    [SerializeField] private LivesController livesController;
+    [SerializeField] private GameOverPanelController gameOverController;
 
     //gameobject active
     private void Awake()
@@ -30,17 +30,38 @@ public class PlayerController : MonoBehaviour
     
     private void Update()
     {
-       
         float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
 
-        PlayerAnimation(horizontal, vertical, crouch, jump);
-        PlayerMovement(horizontal, vertical);
+        if (Input.GetKeyDown(KeyCode.Space) && isgrounded)
+        {
+            canJump = true;
+        }
+        else 
+        { 
+            canJump = false;
+        }
+
+        Jump();
+        PlayerAnimation(horizontal);
+        PlayerMovement(horizontal);
         PlayMovementSound(horizontal);
        
     }
+
+    // jump movement
+    private void Jump()
+    {
+        //player vertical movement
+        if (canJump)
+        {
+            SoundManager.Instance.Play(SoundTypes.PLAYERJUMP);
+            rigidbdy.AddForce(Vector2.up * jumpforce, ForceMode2D.Force);
+            Debug.Log("Player jumped ");
+            PlayerJumpAnim();
+       }
+    }
     //player movement sound
-     private void PlayMovementSound(float horizontal)
+    private void PlayMovementSound(float horizontal)
     {
         if (horizontal != 0 && isgrounded)
         {
@@ -71,9 +92,9 @@ public class PlayerController : MonoBehaviour
     }
 
     //wait time coroutine for player death
-    public IEnumerator WaitForSomeTime()
+    private IEnumerator WaitForSomeTime()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         SoundManager.Instance.Play(SoundTypes.PLAYERDEATH);
         gameOverController.PlayerDied();
     }
@@ -94,33 +115,33 @@ public class PlayerController : MonoBehaviour
     //Detect if player is grounded with platform 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Platform")
+        if(collision.gameObject.CompareTag("Platform"))
         {
             isgrounded= true;
         }
     }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isgrounded = false;
+        }
+    }
 
     //movement for player
-    private void PlayerMovement (float horizontal, float vertical)
+    private void PlayerMovement (float horizontal)
     {
         //player horizontal movement
         Vector3 position = transform.position;
         position.x += horizontal * speed * Time.deltaTime; 
         transform.position = position;
-
-        //player vertical movement
-        if (vertical > 0 && isgrounded)
-            {
-                SoundManager.Instance.Play(SoundTypes.PLAYERJUMP);
-                rigidbdy.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
-                Debug.Log("Player jumped ");
-                isgrounded = false;
-            }
-
     }
+
     
+       
+
     //animations for player - run, crouch, jump
-    private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump )
+    private void PlayerAnimation (float horizontal)
     {
         //run animation
         playerAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
@@ -136,7 +157,7 @@ public class PlayerController : MonoBehaviour
         }
         transform.localScale = scale;
 
-        // crouch animation
+        // crouch collider
          if (Input.GetKey(KeyCode.LeftControl))
         {
             crouch = true;
@@ -149,19 +170,16 @@ public class PlayerController : MonoBehaviour
             boxCollider.size = new Vector2(0.4212f, 2.0952f);
             boxCollider.offset = new Vector2(-0.0194f , 0.9591f);
         }
+         //crouch animation
         playerAnimator.SetBool("Crouch", crouch);
-
-        //jump animation
-        if (vertical > 0)
-        {
-            jump = true;
-        } else
-        {
-            jump = false;
-        }
-        playerAnimator.SetBool("Jump", jump);
     }
 
+    //player jump animation
+    private void PlayerJumpAnim()
+    {
+         playerAnimator.SetTrigger("Jump");
+        Debug.Log("Player jump animation played");
+    }
     //player death animation
     public void PlayerDeathAnim()
     {

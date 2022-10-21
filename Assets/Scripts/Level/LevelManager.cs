@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     private static LevelManager instance;
     public static LevelManager Instance { get { return instance; } }
     public string[] levelNames;
-
+    
     private void Awake()
     {
         if(instance == null)
