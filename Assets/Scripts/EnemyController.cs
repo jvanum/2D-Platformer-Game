@@ -59,7 +59,6 @@ public class EnemyController : MonoBehaviour
         playerController = collision.gameObject.GetComponent<PlayerController>();
         if (playerController != null)
         {
-            Debug.Log("Player collided with Enemy");
             playerController.TakeDamage();
         }
     }

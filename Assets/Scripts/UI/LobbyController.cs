@@ -36,7 +36,6 @@ public class LobbyController : MonoBehaviour
     private void ExitGame()
     {
         SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
-        Debug.Log("Quit Game");
         Application.Quit();
     }
 

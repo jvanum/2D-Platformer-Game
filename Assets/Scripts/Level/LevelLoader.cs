@@ -22,7 +22,6 @@ public class LevelLoader : MonoBehaviour
         {
             case LevelStatus.LOCKED:
                 SoundManager.Instance.Play(SoundTypes.LEVELLOCKED);
-                Debug.Log("Level Locked");
                 break;
             case LevelStatus.UNLOCKED:
                 SoundManager.Instance.Play(SoundTypes.LEVELLOAD);

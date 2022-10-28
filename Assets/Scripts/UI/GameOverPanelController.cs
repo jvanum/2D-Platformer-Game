@@ -35,6 +35,5 @@ public class GameOverPanelController : MonoBehaviour
     {
         SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         Application.Quit();
-        Debug.Log("Quit Game");
     }
 }
