@@ -2,10 +2,11 @@ using System.Collections;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float jumpforce;
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private float jumpforce = 1500f;
     private bool isgrounded;
     private float horizontal;
+    private string platform = "Platform";
 
     public ScoreController scoreControl;
     [HideInInspector]
@@ -146,14 +147,14 @@ public class PlayerController : MonoBehaviour
     //Detect if player is grounded with platform 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+        if (collision.gameObject.CompareTag(platform))
         {
             isgrounded = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+        if (collision.gameObject.CompareTag(platform))
         {
             isgrounded = false;
         }

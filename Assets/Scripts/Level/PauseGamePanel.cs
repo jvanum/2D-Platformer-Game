@@ -7,11 +7,13 @@ public class PauseGamePanel : MonoBehaviour
 {   
     [SerializeField]
     private ResumeGamePanel rgPanel;
-    [SerializeField] private Button buttonPause;
-
-    private void Awake()
-    {  
-         buttonPause.onClick.AddListener(PauseGame);
+  
+    private void Update()
+    {
+        if(Input.GetKeyUp(KeyCode.Escape))
+        {
+            PauseGame();
+        }
     }
     private void PauseGame ()
     {
