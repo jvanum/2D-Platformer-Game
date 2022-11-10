@@ -22,16 +22,18 @@ public class GameOverPanelController : MonoBehaviour
 
     private void ReloadGame()
     {
+        SoundManager.Instance.Play(SoundTypes.LEVELLOAD);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void MainMenu()
     {
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         SceneManager.LoadScene(0);
     }
     private void ExitGame()
     {
+        SoundManager.Instance.Play(SoundTypes.BUTTONCLICK);
         Application.Quit();
-        Debug.Log("Quit Game");
     }
 }

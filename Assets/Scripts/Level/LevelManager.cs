@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     private static LevelManager instance;
     public static LevelManager Instance { get { return instance; } }
     public string[] levelNames;
-
+    
     private void Awake()
     {
         if(instance == null)
@@ -20,7 +20,6 @@ public class LevelManager : MonoBehaviour
         else
         {
             Destroy(gameObject);  
-            Debug.Log("Destroyed LevelManager GameObject");
         }
     }
 
@@ -44,7 +43,6 @@ public class LevelManager : MonoBehaviour
     public void LevelCompleted()
     {
         SetLevelStatus(SceneManager.GetActiveScene().name, LevelStatus.COMPLETED);
-        Debug.Log(SceneManager.GetActiveScene().name + " completed");
         UnlockNextLevel();
     }
 
@@ -57,7 +55,6 @@ public class LevelManager : MonoBehaviour
             if (GetLevelStatus(levelNames[nextLevelIndex]) == LevelStatus.LOCKED)
             {
                 SetLevelStatus(levelNames[nextLevelIndex], LevelStatus.UNLOCKED);
-                Debug.Log(levelNames [nextLevelIndex] + " unlocked");
             }
         }
     }

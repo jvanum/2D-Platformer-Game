@@ -5,13 +5,13 @@ using UnityEngine;
 // common enemy behaviour controller
 public class EnemyController : MonoBehaviour
 {
-    private float speed = 2f; // speed of enemy patrolling
-    private float xScale = 0f;// to retain enemy object scale
+    [SerializeField] private float speed = 2f; // speed of enemy patrolling
+    private float xScale;// to retain enemy object scale
+    private string platform = "Platform";
 
     private Rigidbody2D enemyRbd;
     private BoxCollider2D enemyBcd;
     private Animator enemyAnim;
-    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Start()
@@ -23,10 +23,15 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {   
+    private void Update()
+    {
+        EnemyPatrolMovement();
+    }
+    
+    private void EnemyPatrolMovement()
+    {
         //enemy movement on platform
-        if (isfacingright())
+        if (transform.localScale.x > 0.01f)
         {
             enemyRbd.velocity = new Vector2(-speed, 0f);
         }
@@ -35,31 +40,24 @@ public class EnemyController : MonoBehaviour
             enemyRbd.velocity = new Vector2(speed, 0f);
         }
         EnemyWalkAnim();
-        
-    }
-    
-    bool isfacingright()
-    {
-        return transform.localScale.x > 0.01f;
     }
 
     // enemy flip movement on platform
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == "Platform")
+        if (other.CompareTag(platform))
         {
             float x = enemyRbd.velocity.x > 0f ? xScale : -xScale;
 
             transform.localScale = new Vector2(x, transform.localScale.y);
         }
     }
+
     // manages player-enemy collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        playerController = collision.gameObject.GetComponent<PlayerController>();
-        if (playerController != null)
+        if (collision.gameObject.TryGetComponent(out PlayerController playerController))
         {
-            Debug.Log("Player collided with Enemy");
             playerController.TakeDamage();
         }
     }
