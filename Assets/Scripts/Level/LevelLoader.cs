@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -18,6 +16,21 @@ public class LevelLoader : MonoBehaviour
 
     private void onClick()
     {
-        SceneManager.LoadScene(levelName);
+        LevelStatus levelStatus = LevelManager.Instance.GetLevelStatus(levelName);
+
+        switch (levelStatus)
+        {
+            case LevelStatus.LOCKED:
+                SoundManager.Instance.Play(SoundTypes.LEVELLOCKED);
+                break;
+            case LevelStatus.UNLOCKED:
+                SoundManager.Instance.Play(SoundTypes.LEVELLOAD);
+                SceneManager.LoadScene(levelName);
+                break;
+            case LevelStatus.COMPLETED:
+                SoundManager.Instance.Play(SoundTypes.LEVELLOAD);
+                SceneManager.LoadScene(levelName);
+                break;
+        }
     }
 }
