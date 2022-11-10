@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4961687408056951297}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,13 +121,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  jumpforce: 40
-  crouch: 0
-  jump: 0
-  isgrounded: 0
-  animator: {fileID: 655055025782106774}
+  jumpforce: 800
+  scoreControl: {fileID: 0}
+  playerAnimator: {fileID: 655055025782106774}
   boxCollider: {fileID: 0}
-  rigidbody: {fileID: 0}
+  rigidbdy: {fileID: 0}
+  livesController: {fileID: 0}
+  gameOverController: {fileID: 0}
 --- !u!50 &4961687408056951296
 Rigidbody2D:
   serializedVersion: 4
@@ -140,10 +140,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

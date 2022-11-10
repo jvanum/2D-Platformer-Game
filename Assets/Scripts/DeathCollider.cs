@@ -5,17 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class DeathCollider : MonoBehaviour
 {
+    public PlayerController playerController;
 
-    private IEnumerator WaitForSceneLoad()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        yield return new WaitForSeconds(1f);
-     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-    }
-    private void OnTriggerEnter2D(Collider2D death)
-    {
-        if (death.gameObject.GetComponent<PlayerController>() != null)
-          Debug.Log("Plater Died, respawning");
-        StartCoroutine(WaitForSceneLoad());
+        playerController = collision.GetComponent<PlayerController>();
+        if (playerController != null)
+        Debug.Log("Player fell from platform, respawning");
+        playerController.KillPlayer();
     }
 }

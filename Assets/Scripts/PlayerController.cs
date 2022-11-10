@@ -9,17 +9,65 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
     public float jumpforce;
-    private bool crouch, jump, isgrounded, playerDead;
+    private bool crouch, jump, isgrounded;
+    // player max and current lives
 
-    public Animator animator;
+    public ScoreController scoreControl;
+    [HideInInspector]
+    public Animator playerAnimator;
+    [HideInInspector]
     public BoxCollider2D boxCollider;
+    [HideInInspector]
     public Rigidbody2D rigidbdy;
+    public LivesController livesController;
+    public GameOverController gameOverController;
 
     //gameobject active
     private void Awake()
     {
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        rigidbdy = gameObject.GetComponent<Rigidbody2D>(); 
+        rigidbdy = gameObject.GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
+    }
+
+    //increases score when key is picked up
+    public void PickKey()
+    {
+        Debug.Log("PickKey called successfully");
+        scoreControl.IncreaseScore(10);
+    }
+
+    //player takes damage on colliding with enemy
+    public void TakeDamage()
+    {
+        int currentLives = livesController.DestroyLife();
+        if(currentLives <= 0)
+        {
+            KillPlayer();
+        }
+        else
+        {
+           PlayerHurtAnim();
+           Debug.Log("Player hurt");
+        }
+    }
+
+    //wait time coroutine for player death
+    public IEnumerator WaitForSomeTime()
+    {
+        yield return new WaitForSeconds(1f);
+        gameOverController.PlayerDied();
+    }
+
+    
+    //called when player dies
+    public void KillPlayer()
+    {
+        Debug.Log("Player Died");
+        PlayerDeathAnim();
+        StartCoroutine(WaitForSomeTime());
+        this.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -34,7 +82,7 @@ public class PlayerController : MonoBehaviour
        
     }
  
-
+    //Detect if player is grounded with platform 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Platform")
@@ -43,39 +91,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Platform")
-        {   
-            Debug.Log("not grounded ");
-            isgrounded = false;
-        }
-    } */
-
     //movement for player
     private void PlayerMovement (float horizontal, float vertical)
     {
-        //horizontal movement
+        //player horizontal movement
         Vector3 position = transform.position;
         position.x += horizontal * speed * Time.deltaTime; 
         transform.position = position;
 
-        //vertical movement
+        //player vertical movement
         if (vertical > 0 && isgrounded)
             {
                 rigidbdy.AddForce(new Vector2(0f, jumpforce), ForceMode2D.Force);
-                            Debug.Log("jumped ");
+                Debug.Log("Player jumped ");
                 isgrounded = false;
-
             }
 
     }
     
-    //animation for player
-    private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump)
+    //animations for player - run, crouch, jump
+    private void PlayerAnimation (float horizontal, float vertical, bool crouch, bool jump )
     {
         //run animation
-        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        playerAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
 
         Vector3 scale = transform.localScale;
         if (horizontal < 0)
@@ -100,8 +138,8 @@ public class PlayerController : MonoBehaviour
             crouch = false;
             boxCollider.size = new Vector2(0.4212f, 2.0952f);
             boxCollider.offset = new Vector2(-0.0194f , 0.9591f);
-        }   
-        animator.SetBool("Crouch", crouch);
+        }
+        playerAnimator.SetBool("Crouch", crouch);
 
         //jump animation
         if (vertical > 0)
@@ -111,16 +149,19 @@ public class PlayerController : MonoBehaviour
         {
             jump = false;
         }
-        animator.SetBool("Jump", jump);
+        playerAnimator.SetBool("Jump", jump);
     }
 
-//death animation
-    private void OnTriggerEnter2D(Collider2D collision)
+    //player death animation
+    public void PlayerDeathAnim()
     {
-        if(collision.gameObject.tag == "Respawn")
-        {
-            playerDead= true;
-        }
-        animator.SetBool("PlayerDead", playerDead);
+        playerAnimator.SetTrigger("PlayerIsDead");
+        Debug.Log("Player Death animation played");
+    }
+
+    public void PlayerHurtAnim()
+    {
+        playerAnimator.SetTrigger("PlayerIsHurt");
+        Debug.Log("Player Hurt animation played");
     }
 }
